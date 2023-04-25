@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+type: software
+message: If you use this software, please cite it using this metadata.
+
+title: "dev-utils"
+version: "0.1.0"
+abstract: "Helper utilities for development, used from other repositories."
+repository-code: "https://github.com/Materials-Data-Science-and-Informatics/dev-utils"
+license: "MIT"
+keywords: [
+    "dev",
+    "misc",
+    "util"
+]
+
+authors:
+  - family-names: "Pirogov"
+    given-names: "Anton"
+    email: "a.pirogov@fz-juelich.de"
+    orcid: "https://orcid.org/0000-0002-5077-7497"
+    affiliation: "Forschungszentrum Jülich GmbH - Institute for Materials Data Science and Informatics (IAS9)"
+

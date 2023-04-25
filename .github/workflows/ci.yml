@@ -1,0 +1,93 @@
+name: CI
+
+on: [push, pull_request, workflow_call]
+
+jobs:
+
+  linting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install poetry
+        run: pipx install poetry
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      # NOTE: using custom cache, to include pre-commit linters + deps
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/pre-commit
+            ~/.cache/pip
+          key: ${{ hashFiles('.pre-commit-config.yaml') }}-pre-commit
+
+      - run: poetry install
+      - run: poetry run poe lint --all-files
+
+  test:
+    needs: linting
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ "ubuntu-latest" ]
+        python-version: [ "3.8", "3.9", "3.10" ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install poetry + poethepoet
+        run: pipx install poetry
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'poetry'
+
+      - run: poetry install
+      - run: poetry run poe test
+      - run: pipx install safety
+      - run: safety check -r pyproject.toml
+
+  docs:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install poetry
+        run: pipx install poetry
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'poetry'
+
+      - name: Install project with mkdocs and plugins
+        run: poetry install --with docs
+
+      - name: Generate test coverage report for docs
+        run: poetry run poe test --cov --cov-report=html
+
+      - name: Configure Git user
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Initialize or check out the GH Pages branch
+        shell: bash
+        run: |
+          if git fetch origin gh-pages:gh-pages
+          then
+            echo "Checked out existing gh-pages branch."
+          else
+            echo "Creating new gh-pages branch and initializing mike."
+            poetry run mike deploy -u main latest
+            poetry run mike set-default latest
+          fi
+
+      - name: Generate documentation for current branch
+        run: poetry run mike deploy -u --push $(echo ${GITHUB_REF#refs/heads/})
