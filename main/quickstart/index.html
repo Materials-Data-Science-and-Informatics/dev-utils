@@ -764,8 +764,13 @@
 <p>The <code>update-codemeta</code> pre-commit hook uses <code>codemetapy</code> to generate or update
 a <code>codemeta.json</code> based on metadata in your <code>pyproject.toml</code>.</p>
 <p>You can use it by adding the following snippet to your <code>.pre-commit-config.yaml</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">todo</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">add snippet</span>
+<div class="highlight"><pre><span></span><code><span class="nn">...</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/Materials-Data-Science-and-Informatics/dev-utils</span>
+<span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;LATEST_VERSION_TAG&#39;</span><span class="w">  </span><span class="c1"># &lt;- replace with latest release tag or commit hash</span>
+<span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">update-codemeta</span>
+<span class="w">        </span><span class="nt">files</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^pyproject.toml$</span>
+<span class="nn">...</span>
 </code></pre></div>
 
 
