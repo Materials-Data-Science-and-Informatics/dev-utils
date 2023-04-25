@@ -7,11 +7,7 @@ version: "0.1.0"
 abstract: "Helper utilities for development, used from other repositories."
 repository-code: "https://github.com/Materials-Data-Science-and-Informatics/dev-utils"
 license: "MIT"
-keywords: [
-    "dev",
-    "misc",
-    "util"
-]
+keywords: ["dev", "misc", "util"]
 
 authors:
   - family-names: "Pirogov"

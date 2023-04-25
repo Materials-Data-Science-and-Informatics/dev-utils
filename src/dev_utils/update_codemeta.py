@@ -1,18 +1,49 @@
-#!/usr/bin/env python3
 """Shallow wrapper around codemetapy to use it with pre-commit."""
-# NOTE: if we allow passing args, make sure to either remove -O flag
-# or backup the original file if it exists before running.
 import importlib.resources
 import json
-import subprocess
 from pathlib import Path
 from typing import List
 
 import rdflib
 import rdflib.compare
 import typer
+from codemeta.codemeta import build
+from codemeta.serializers.jsonld import serialize_to_jsonld
 
 # ----
+# Replicate basic codemetapy behavior (based on codemeta.codemeta.main module)
+
+
+def gen_codemeta(sources, *, with_entrypoints: bool = False):
+    """Run codemeta file generation using Python API.
+
+    Returns JSON-LD dict.
+    """
+    supp_inputs = set(["codemeta.json", "pyproject.toml"])
+    req_inputs = supp_inputs.intersection(set(sources))
+    eff_inputs = [p for p in req_inputs if Path(p).is_file()]
+    print(Path(".").absolute())
+    print(Path("pyproject.toml").absolute())
+    print(Path("pyproject.toml").absolute().is_file())
+    print("req", req_inputs)
+    print("eff", eff_inputs)
+
+    g, res, args, _ = build(
+        inputsources=eff_inputs,
+        output="json",
+        with_entrypoints=with_entrypoints,
+    )
+    return serialize_to_jsonld(g, res, args)
+
+
+def serialize_codemeta(cm) -> str:
+    """Convert JSON Dict to str (using settings like codemetapy)."""
+    # using settings like in codemetapy
+    return json.dumps(cm, indent=4, ensure_ascii=False, sort_keys=True)
+
+
+# ----
+# Helpers to work around issue with non-deterministic serialization
 
 # expected URLs
 codemeta_context = set(
@@ -26,7 +57,9 @@ codemeta_context = set(
     ]
 )
 
+# assembled context (manually downloaded and combined in a JSON array)
 context_file = "codemeta_context_2023-04-19.json"
+
 with importlib.resources.open_text(__package__, context_file) as c:
     cached_context = json.load(c)
 
@@ -44,7 +77,7 @@ def localize_codemeta_context(json):
 
 
 # ----
-
+# Wrapper CLI app
 
 app = typer.Typer()
 
@@ -70,33 +103,22 @@ def update_codemeta(
     target: Path = trg_arg,
     sources: List[str] = src_arg,
 ):
+    # load old codemeta graph (if any)
     old_metadata = rdflib.Graph()
     if target.is_file():
         with open(target, "r") as f:
             dat = json.dumps(localize_codemeta_context(json.load(f)))
         old_metadata.parse(data=dat, format="json-ld")
 
-    ret = subprocess.run(["codemetapy", *sources], check=True, capture_output=True)
-    out = ret.stdout.decode("utf-8")
+    # generate new codemeta graph
+    cm = gen_codemeta(sources)
+    original = serialize_codemeta(cm)
 
-    # only write result to file if the triples changed
+    # only write result to file if the graph changed
+    expanded = serialize_codemeta(localize_codemeta_context(cm))
     new_metadata = rdflib.Graph()
-    expanded = json.dumps(localize_codemeta_context(json.loads(out)))
     new_metadata.parse(data=expanded, format="json-ld")
-
-    # print("old")
-    # for a, b, c in old_metadata:
-    #     print(a, b, c)
-    # print("new")
-    # for a, b, c in new_metadata:
-    #     print(a, b, c)
-    # print("same:", rdflib.compare.isomorphic(old_metadata, new_metadata))
-
     if not rdflib.compare.isomorphic(old_metadata, new_metadata):
         typer.echo(f"Project metadata changed, writing {target} ...")
         with open(target, "w") as f:
-            f.write(out)
-
-
-if __name__ == "__main__":
-    app()
+            f.write(original)

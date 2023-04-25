@@ -69,9 +69,6 @@ jobs:
       - name: Install project with mkdocs and plugins
         run: poetry install --with docs
 
-      - name: Generate test coverage report for docs
-        run: poetry run poe test --cov --cov-report=html
-
       - name: Configure Git user
         run: |
           git config --local user.name "github-actions[bot]"

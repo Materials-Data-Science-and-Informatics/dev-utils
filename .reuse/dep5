@@ -3,11 +3,7 @@ Upstream-Name: dev-utils
 Upstream-Contact: Anton Pirogov <a.pirogov@fz-juelich.de>
 Source: https://github.com/Materials-Data-Science-and-Informatics/dev-utils
 
-Files: scripts/update-codemeta/*
-Copyright: 2023 Forschungszentrum Jülich GmbH - Institute for Materials and Data Science - Stefan Sandfeld <s.sandfeld@fz-juelich.de>
-License: MIT
-
-Files: .gitignore pyproject.toml poetry.lock .pre-commit-config.yaml codemeta.json CITATION.cff README.md RELEASE_NOTES.md CHANGELOG.md CODE_OF_CONDUCT.md AUTHORS.md CONTRIBUTING.md .gitlab-ci.yml .gitlab/* .github/* mkdocs.yml docs/*
+Files: .gitignore pyproject.toml poetry.lock .pre-commit-config.yaml .pre-commit-hooks.yaml codemeta.json CITATION.cff README.md RELEASE_NOTES.md CHANGELOG.md CODE_OF_CONDUCT.md AUTHORS.md CONTRIBUTING.md .gitlab-ci.yml .gitlab/* .github/* mkdocs.yml docs/*
 Copyright: 2023 Forschungszentrum Jülich GmbH - Institute for Materials Data Science and Informatics (IAS9) - Stefan Sandfeld <s.sandfeld@fz-juelich.de>
 License: CC0-1.0
 

@@ -1,13 +1,17 @@
 # How To Contribute
 
 All kinds of contributions are very welcome!
-You can contribute in various ways, e.g. by
+You can contribute in various ways, e.g. by:
+
 * providing feedback
 * asking questions
 * suggesting ideas
 * implementing features
 * fixing problems
 * improving documentation
+
+To make contributing to open source projects a good experience to everyone involved,
+please make sure that you follow our code of conduct when communicating with others.
 
 ## Ideas, Questions and Problems
 
@@ -50,6 +54,7 @@ Common tasks are accessible via [poe](https://github.com/nat-n/poethepoet):
 In order to contribute code, please open a pull request to the `dev` branch.
 
 Before opening the PR, please make sure that your changes
+
 * are sufficiently covered by meaningful **tests**,
 * are reflected in suitable **documentation** (API docs, guides, etc.), and
 * successfully pass all pre-commit hooks.

@@ -1,6 +1,6 @@
 # basic configuration:
 site_name: "dev-utils"
-site_description: "0.1.0"
+site_description: "Helper utilities for development used by other repositories."
 site_url: "https://materials-data-science-and-informatics.github.io/dev-utils"
 repo_url: "https://github.com/Materials-Data-Science-and-Informatics/dev-utils"
 edit_uri: "blob/main/docs/"
@@ -14,11 +14,12 @@ nav:
     - Credits: credits.md
     - License: license.md
   - Usage:
+    - Quickstart: quickstart.md
     - API: reference/              # auto-generated (from Python docstrings)
   - Development:
-    - Contributing: contributing.md
+    - How to Contribute: contributing.md
     - Code of Conduct: code_of_conduct.md
-    - Test Coverage Report: coverage.md # cov report (pytest --cov --cov-report html)
+    - Coverage Report: coverage.md # cov report (pytest --cov --cov-report html)
 
 extra:
   # social links in footer:
@@ -86,7 +87,8 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.superfences
   # smart links: https://facelessuser.github.io/pymdown-extensions/extensions/magiclink/
-  - pymdownx.magiclink
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
   # Strikethrough markup: https://facelessuser.github.io/pymdown-extensions/extensions/tilde/
   - pymdownx.tilde
   # Auto-Unicode for common symbols: https://facelessuser.github.io/pymdown-extensions/extensions/smartsymbols/
@@ -126,5 +128,8 @@ plugins:
       enabled: !ENV [OFFLINE, false]
   # to make multi-version docs work right
   - mike
+
+hooks:
+  - docs/scripts/cov_badge.py
 
 strict: true

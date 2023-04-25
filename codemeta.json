@@ -10,11 +10,11 @@
     "audience": [
         {
             "@type": "Audience",
-            "audienceType": "Developers"
+            "audienceType": "Science/Research"
         },
         {
             "@type": "Audience",
-            "audienceType": "Science/Research"
+            "audienceType": "Developers"
         }
     ],
     "author": [
@@ -38,12 +38,42 @@
     "name": "dev-utils",
     "operatingSystem": "POSIX > Linux",
     "runtimePlatform": "Python 3",
-    "softwareRequirements": {
-        "@type": "SoftwareApplication",
-        "identifier": "python",
-        "name": "python",
-        "runtimePlatform": "Python 3",
-        "version": "^3.8"
+    "softwareRequirements": [
+        {
+            "@type": "SoftwareApplication",
+            "identifier": "codemetapy",
+            "name": "codemetapy",
+            "runtimePlatform": "Python 3",
+            "version": "^2.4.1"
+        },
+        {
+            "@type": "SoftwareApplication",
+            "identifier": "python",
+            "name": "python",
+            "runtimePlatform": "Python 3",
+            "version": "^3.8"
+        },
+        {
+            "@type": "SoftwareApplication",
+            "identifier": "rdflib",
+            "name": "rdflib",
+            "runtimePlatform": "Python 3",
+            "version": "^6.3.2"
+        },
+        {
+            "@type": "SoftwareApplication",
+            "identifier": "typer",
+            "name": "typer",
+            "runtimePlatform": "Python 3",
+            "version": "^0.7.0"
+        }
+    ],
+    "targetProduct": {
+        "@type": "CommandLineApplication",
+        "description": "Shallow wrapper around codemetapy to use it with pre-commit.",
+        "executableName": "update-codemeta",
+        "name": "update-codemeta",
+        "runtimePlatform": "Python 3"
     },
     "version": "0.1.0"
 }

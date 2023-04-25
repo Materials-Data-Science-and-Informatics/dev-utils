@@ -11,13 +11,16 @@ For a more complete overview of all contributors and contributions,
 please inspect the git history of this repository.
 
 ## Main Authors
-- Anton Pirogov (FZJ, [E-Mail](mailto:a.pirogov@fz-juelich.de), [ORCID](https://orcid.org/0000-0002-5077-7497)): original author
+
+- Anton Pirogov (
+    [E-Mail](mailto:a.pirogov@fz-juelich.de),
+    [ORCID](https://orcid.org/0000-0002-5077-7497)
+  ): original author
 
 ## Additional Contributions
 <!--
 We would also like to thank the following people for their contributions:
-- Name (Affiliation, E-mail, ORCID):
-Summary of contribution
+- Name (, E-mail, ORCID): Summary of contribution
 -->
 
 ... and maybe **[you](https://materials-data-science-and-informatics.github.io/dev-utils/main/contributing)**?
