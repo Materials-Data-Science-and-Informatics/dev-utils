@@ -82,6 +82,10 @@ markdown_extensions:
       permalink: true
   # Setting HTML/CSS attributes: https://python-markdown.github.io/extensions/attr_list/
   - attr_list
+  # Definitions: https://python-markdown.github.io/extensions/definition_lists/
+  - def_list
+  # Footnotes: https://squidfunk.github.io/mkdocs-material/reference/footnotes/
+  - footnotes
   # Various boxes: https://squidfunk.github.io/mkdocs-material/reference/admonitions/
   - admonition
   - pymdownx.details
@@ -91,6 +95,8 @@ markdown_extensions:
       repo_url_shorthand: true
   # Strikethrough markup: https://facelessuser.github.io/pymdown-extensions/extensions/tilde/
   - pymdownx.tilde
+  # Superscript: https://facelessuser.github.io/pymdown-extensions/extensions/caret/
+  - pymdownx.caret
   # Auto-Unicode for common symbols: https://facelessuser.github.io/pymdown-extensions/extensions/smartsymbols/
   - pymdownx.smartsymbols
   # Github-style task list: https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown-extensions/#tasklist
