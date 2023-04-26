@@ -2,10 +2,13 @@
 ![Docs](https://img.shields.io/badge/read-docs-success)
 ](https://materials-data-science-and-informatics.github.io/dev-utils)
 [
-![Tests](https://img.shields.io/github/actions/workflow/status/Materials-Data-Science-and-Informatics/dev-utils/ci.yml?branch=main&label=tests)
+![CI](https://img.shields.io/github/actions/workflow/status/Materials-Data-Science-and-Informatics/dev-utils/ci.yml?branch=main&label=CI)
 ](https://github.com/Materials-Data-Science-and-Informatics/dev-utils/actions?query=workflow:ci)
 [
-![Coverage](https://materials-data-science-and-informatics.github.io/dev-utils/main/coverage.svg)
+![Docs Coverage](https://materials-data-science-and-informatics.github.io/dev-utils/main/interrogate_badge.svg)
+](https://materials-data-science-and-informatics.github.io/dev-utils)
+[
+![Test Coverage](https://materials-data-science-and-informatics.github.io/dev-utils/main/coverage_badge.svg)
 ](https://materials-data-science-and-informatics.github.io/dev-utils/main/coverage)
 
 <!-- --8<-- [start:abstract] -->

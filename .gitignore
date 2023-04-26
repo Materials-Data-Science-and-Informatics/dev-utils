@@ -1,3 +1,6 @@
+# badges built for docs
+docs/*_badge.svg
+
 # don't add custom python shell scratchpad file
 scratch*.py
 

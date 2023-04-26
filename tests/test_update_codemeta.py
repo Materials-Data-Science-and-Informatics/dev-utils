@@ -1,3 +1,4 @@
+"""Tests for the `update-codemeta` CLI tool."""
 from pathlib import Path
 from shutil import copyfile, move
 
@@ -9,6 +10,7 @@ runner = CliRunner()
 
 
 def test_update_codemeta(tmp_path):
+    """Test CLI tool behavior with missing, changed and unchanged `codemeta.json`."""
     # use own pyproject.toml for testing
     # NOTE: make path absolute, because isolated_filesystem changes cwd
     pyproject_copy = (tmp_path / "pyproject.toml").absolute()

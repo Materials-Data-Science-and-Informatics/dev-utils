@@ -14,7 +14,7 @@ from codemeta.serializers.jsonld import serialize_to_jsonld
 # Replicate basic codemetapy behavior (based on codemeta.codemeta.main module)
 
 
-def gen_codemeta(sources, *, with_entrypoints: bool = False):
+def _gen_codemeta(sources, *, with_entrypoints: bool = False):
     """Run codemeta file generation using Python API.
 
     Returns JSON-LD dict.
@@ -36,7 +36,7 @@ def gen_codemeta(sources, *, with_entrypoints: bool = False):
     return serialize_to_jsonld(g, res, args)
 
 
-def serialize_codemeta(cm) -> str:
+def _serialize_codemeta(cm) -> str:
     """Convert JSON Dict to str (using settings like codemetapy)."""
     # using settings like in codemetapy
     return json.dumps(cm, indent=4, ensure_ascii=False, sort_keys=True)
@@ -46,7 +46,7 @@ def serialize_codemeta(cm) -> str:
 # Helpers to work around issue with non-deterministic serialization
 
 # expected URLs
-codemeta_context = set(
+_codemeta_context = set(
     [
         "https://doi.org/10.5063/schema/codemeta-2.0",
         "https://w3id.org/software-iodata",
@@ -58,18 +58,18 @@ codemeta_context = set(
 )
 
 # assembled context (manually downloaded and combined in a JSON array)
-context_file = "codemeta_context_2023-04-19.json"
+_context_file = "codemeta_context_2023-04-19.json"
 
-with importlib.resources.open_text(__package__, context_file) as c:
+with importlib.resources.open_text(__package__, _context_file) as c:
     cached_context = json.load(c)
 
 
-def localize_codemeta_context(json):
+def _localize_codemeta_context(json):
     """Prevent rdflib external context resolution by adding it from a file."""
     ctx = set(json.get("@context") or [])
     if not ctx:
         return json  # probably empty or not codemeta, nothing to do
-    if ctx != codemeta_context:
+    if ctx != _codemeta_context:
         raise RuntimeError(f"Unexpected codemeta context: {json['@context']}")
     ret = dict(json)
     ret.update({"@context": cached_context})
@@ -103,19 +103,31 @@ def update_codemeta(
     target: Path = trg_arg,
     sources: List[str] = src_arg,
 ):
+    """Entry point of CLI application.
+
+    Runs codemetapy on the passed sources,
+    compares resulting graph with target file (if it exists).
+
+    Only writes to the output if the metadata is not equivalent.
+    The equivalence is checked on graph level using `rdflib`.
+
+    Args:
+        target: Output file (usually `codemeta.json`)
+        sources: Metadata input files (such as `pyproject.toml`)
+    """
     # load old codemeta graph (if any)
     old_metadata = rdflib.Graph()
     if target.is_file():
         with open(target, "r") as f:
-            dat = json.dumps(localize_codemeta_context(json.load(f)))
+            dat = json.dumps(_localize_codemeta_context(json.load(f)))
         old_metadata.parse(data=dat, format="json-ld")
 
     # generate new codemeta graph
-    cm = gen_codemeta(sources)
-    original = serialize_codemeta(cm)
+    cm = _gen_codemeta(sources)
+    original = _serialize_codemeta(cm)
 
     # only write result to file if the graph changed
-    expanded = serialize_codemeta(localize_codemeta_context(cm))
+    expanded = _serialize_codemeta(_localize_codemeta_context(cm))
     new_metadata = rdflib.Graph()
     new_metadata.parse(data=expanded, format="json-ld")
     if not rdflib.compare.isomorphic(old_metadata, new_metadata):
