@@ -568,22 +568,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#dev_utils.update_codemeta.gen_codemeta" class="md-nav__link">
-    gen_codemeta()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dev_utils.update_codemeta.localize_codemeta_context" class="md-nav__link">
-    localize_codemeta_context()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dev_utils.update_codemeta.serialize_codemeta" class="md-nav__link">
-    serialize_codemeta()
+  <a href="#dev_utils.update_codemeta.update_codemeta" class="md-nav__link">
+    update_codemeta()
   </a>
   
 </li>
@@ -726,22 +712,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#dev_utils.update_codemeta.gen_codemeta" class="md-nav__link">
-    gen_codemeta()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dev_utils.update_codemeta.localize_codemeta_context" class="md-nav__link">
-    localize_codemeta_context()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dev_utils.update_codemeta.serialize_codemeta" class="md-nav__link">
-    serialize_codemeta()
+  <a href="#dev_utils.update_codemeta.update_codemeta" class="md-nav__link">
+    update_codemeta()
   </a>
   
 </li>
@@ -803,128 +775,139 @@
 
 
 
-<h2 id="dev_utils.update_codemeta.gen_codemeta" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">gen_codemeta</span><span class="p">(</span><span class="n">sources</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">with_entrypoints</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+<h2 id="dev_utils.update_codemeta.update_codemeta" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">update_codemeta</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">trg_arg</span><span class="p">,</span> <span class="n">sources</span><span class="o">=</span><span class="n">src_arg</span><span class="p">)</span></code>
 
-<a href="#dev_utils.update_codemeta.gen_codemeta" class="headerlink" title="Permanent link">&para;</a></h2>
+<a href="#dev_utils.update_codemeta.update_codemeta" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
   <div class="doc doc-contents ">
   
-      <p>Run codemeta file generation using Python API.</p>
-<p>Returns JSON-LD dict.</p>
+      <p>Entry point of CLI application.</p>
+<p>Runs codemetapy on the passed sources,
+compares resulting graph with target file (if it exists).</p>
+<p>Only writes to the output if the metadata is not equivalent.
+The equivalence is checked on graph level using <code>rdflib</code>.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>target</code></td>
+          <td>
+                <code><span title="pathlib.Path">Path</span></code>
+          </td>
+          <td><p>Output file (usually <code>codemeta.json</code>)</p></td>
+          <td>
+                <code>trg_arg</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>sources</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[str]</code>
+          </td>
+          <td><p>Metadata input files (such as <code>pyproject.toml</code>)</p></td>
+          <td>
+                <code>src_arg</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
 
       <details class="quote">
         <summary>Source code in <code>src/dev_utils/update_codemeta.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">gen_codemeta</span><span class="p">(</span><span class="n">sources</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">with_entrypoints</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run codemeta file generation using Python API.</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@app</span><span class="o">.</span><span class="n">command</span><span class="p">(</span>
+    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Create or update the target codemeta file (first argument)</span>
+<span class="s2">by running codemetapy with all the other passed arguments.</span>
+<span class="s2">If the output is the same as before, will keep file unchanged.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">update_codemeta</span><span class="p">(</span>
+    <span class="n">target</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">trg_arg</span><span class="p">,</span>
+    <span class="n">sources</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">src_arg</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Entry point of CLI application.</span>
 
-<span class="sd">    Returns JSON-LD dict.</span>
+<span class="sd">    Runs codemetapy on the passed sources,</span>
+<span class="sd">    compares resulting graph with target file (if it exists).</span>
+
+<span class="sd">    Only writes to the output if the metadata is not equivalent.</span>
+<span class="sd">    The equivalence is checked on graph level using `rdflib`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        target: Output file (usually `codemeta.json`)</span>
+<span class="sd">        sources: Metadata input files (such as `pyproject.toml`)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">supp_inputs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="s2">&quot;codemeta.json&quot;</span><span class="p">,</span> <span class="s2">&quot;pyproject.toml&quot;</span><span class="p">])</span>
-    <span class="n">req_inputs</span> <span class="o">=</span> <span class="n">supp_inputs</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">sources</span><span class="p">))</span>
-    <span class="n">eff_inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">req_inputs</span> <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">()]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">absolute</span><span class="p">())</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;pyproject.toml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">absolute</span><span class="p">())</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;pyproject.toml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span><span class="o">.</span><span class="n">is_file</span><span class="p">())</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;req&quot;</span><span class="p">,</span> <span class="n">req_inputs</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;eff&quot;</span><span class="p">,</span> <span class="n">eff_inputs</span><span class="p">)</span>
+    <span class="c1"># load old codemeta graph (if any)</span>
+    <span class="n">old_metadata</span> <span class="o">=</span> <span class="n">rdflib</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">dat</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">_localize_codemeta_context</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)))</span>
+        <span class="n">old_metadata</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">dat</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;json-ld&quot;</span><span class="p">)</span>
 
-    <span class="n">g</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">build</span><span class="p">(</span>
-        <span class="n">inputsources</span><span class="o">=</span><span class="n">eff_inputs</span><span class="p">,</span>
-        <span class="n">output</span><span class="o">=</span><span class="s2">&quot;json&quot;</span><span class="p">,</span>
-        <span class="n">with_entrypoints</span><span class="o">=</span><span class="n">with_entrypoints</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">serialize_to_jsonld</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
+    <span class="c1"># generate new codemeta graph</span>
+    <span class="n">cm</span> <span class="o">=</span> <span class="n">_gen_codemeta</span><span class="p">(</span><span class="n">sources</span><span class="p">)</span>
+    <span class="n">original</span> <span class="o">=</span> <span class="n">_serialize_codemeta</span><span class="p">(</span><span class="n">cm</span><span class="p">)</span>
 
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-
-<h2 id="dev_utils.update_codemeta.localize_codemeta_context" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">localize_codemeta_context</span><span class="p">(</span><span class="n">json</span><span class="p">)</span></code>
-
-<a href="#dev_utils.update_codemeta.localize_codemeta_context" class="headerlink" title="Permanent link">&para;</a></h2>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Prevent rdflib external context resolution by adding it from a file.</p>
-
-      <details class="quote">
-        <summary>Source code in <code>src/dev_utils/update_codemeta.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">67</span>
-<span class="normal">68</span>
-<span class="normal">69</span>
-<span class="normal">70</span>
-<span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span>
-<span class="normal">75</span>
-<span class="normal">76</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">localize_codemeta_context</span><span class="p">(</span><span class="n">json</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Prevent rdflib external context resolution by adding it from a file.&quot;&quot;&quot;</span>
-    <span class="n">ctx</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;@context&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[])</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">ctx</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">json</span>  <span class="c1"># probably empty or not codemeta, nothing to do</span>
-    <span class="k">if</span> <span class="n">ctx</span> <span class="o">!=</span> <span class="n">codemeta_context</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected codemeta context: </span><span class="si">{</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;@context&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">ret</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">json</span><span class="p">)</span>
-    <span class="n">ret</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;@context&quot;</span><span class="p">:</span> <span class="n">cached_context</span><span class="p">})</span>
-    <span class="k">return</span> <span class="n">ret</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-
-<h2 id="dev_utils.update_codemeta.serialize_codemeta" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">serialize_codemeta</span><span class="p">(</span><span class="n">cm</span><span class="p">)</span></code>
-
-<a href="#dev_utils.update_codemeta.serialize_codemeta" class="headerlink" title="Permanent link">&para;</a></h2>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Convert JSON Dict to str (using settings like codemetapy).</p>
-
-      <details class="quote">
-        <summary>Source code in <code>src/dev_utils/update_codemeta.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">serialize_codemeta</span><span class="p">(</span><span class="n">cm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert JSON Dict to str (using settings like codemetapy).&quot;&quot;&quot;</span>
-    <span class="c1"># using settings like in codemetapy</span>
-    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># only write result to file if the graph changed</span>
+    <span class="n">expanded</span> <span class="o">=</span> <span class="n">_serialize_codemeta</span><span class="p">(</span><span class="n">_localize_codemeta_context</span><span class="p">(</span><span class="n">cm</span><span class="p">))</span>
+    <span class="n">new_metadata</span> <span class="o">=</span> <span class="n">rdflib</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+    <span class="n">new_metadata</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">expanded</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;json-ld&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">rdflib</span><span class="o">.</span><span class="n">compare</span><span class="o">.</span><span class="n">isomorphic</span><span class="p">(</span><span class="n">old_metadata</span><span class="p">,</span> <span class="n">new_metadata</span><span class="p">):</span>
+        <span class="n">typer</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Project metadata changed, writing </span><span class="si">{</span><span class="n">target</span><span class="si">}</span><span class="s2"> ...&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">original</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
